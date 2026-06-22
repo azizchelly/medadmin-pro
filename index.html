@@ -301,7 +301,7 @@ let currentRole = null;
 async function doLogin() {
   const email      = document.getElementById('login-email').value.trim();
   const pass       = document.getElementById('login-pass').value.trim();
-  const rememberMe = document.getElementById('remember-me').checked;
+  const rememberMe = document.getElementById('remember-me')?.checked || false;
   const errEl      = document.getElementById('login-error');
   const btn        = document.getElementById('btn-login');
 
