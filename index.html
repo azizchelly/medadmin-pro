@@ -930,6 +930,12 @@ async function openModalRdv(rdvId = null) {
   const patients = await getPatients();
   const rdv = rdvId ? await db.from('rendez_vous').select('*').eq('id', rdvId).single().then(r => r.data) : null;
 
+  const today = todayStr();
+  const now = new Date();
+  const currentHour = now.getHours().toString().padStart(2,'0');
+  const nextHour = ((now.getHours() + 1) % 24).toString().padStart(2,'0');
+  const defaultTime = `${nextHour}:00`;
+
   const optionsPatients = patients.map(p =>
     `<option value="${p.id}" ${rdv?.patient_id === p.id ? 'selected' : ''}>${p.nom}</option>`
   ).join('');
@@ -941,8 +947,19 @@ async function openModalRdv(rdvId = null) {
       <select id="f-patient">${optionsPatients}</select>
     </div>
     <div class="field-row">
-      <div class="field"><label>Date</label><input type="date" id="f-date" value="${rdv?.date || todayStr()}"></div>
-      <div class="field"><label>Heure</label><input type="time" id="f-heure" value="${rdv?.heure?.slice(0,5) || '09:00'}"></div>
+      <div class="field">
+        <label>Date</label>
+        <input type="date" id="f-date" 
+          value="${rdv?.date || today}" 
+          min="${rdv ? '' : today}"
+          onchange="updateMinTime()">
+      </div>
+      <div class="field">
+        <label>Heure</label>
+        <input type="time" id="f-heure" 
+          value="${rdv?.heure?.slice(0,5) || defaultTime}"
+          min="${defaultTime}">
+      </div>
     </div>
     <div class="field-row">
       <div class="field"><label>Type</label>
@@ -968,11 +985,45 @@ async function openModalRdv(rdvId = null) {
     </div>`);
 }
 
+function updateMinTime() {
+  const dateInput = document.getElementById('f-date');
+  const heureInput = document.getElementById('f-heure');
+  const today = todayStr();
+  if (dateInput.value === today) {
+    const now = new Date();
+    const nextHour = ((now.getHours() + 1) % 24).toString().padStart(2,'0');
+    heureInput.min = `${nextHour}:00`;
+    if (heureInput.value < heureInput.min) heureInput.value = heureInput.min;
+  } else {
+    heureInput.min = '07:00';
+  }
+}
+
 async function sauvegarderRdv(rdvId) {
+  const date  = document.getElementById('f-date').value;
+  const heure = document.getElementById('f-heure').value;
+
+  // Validation : pas dans le passé (sauf si modification)
+  if (!rdvId) {
+    const maintenant = new Date();
+    const rdvDateTime = new Date(date + 'T' + heure);
+    if (rdvDateTime < maintenant) {
+      showToast('Impossible de créer un RDV dans le passé !');
+      return;
+    }
+  }
+
+  // Validation : heures ouverture cabinet (7h - 20h)
+  const heureNum = parseInt(heure.split(':')[0]);
+  if (heureNum < 7 || heureNum >= 20) {
+    showToast('Heure invalide — cabinet ouvert de 07h00 à 20h00');
+    return;
+  }
+
   const payload = {
     patient_id:  document.getElementById('f-patient').value,
-    date:        document.getElementById('f-date').value,
-    heure:       document.getElementById('f-heure').value + ':00',
+    date,
+    heure:       heure + ':00',
     type:        document.getElementById('f-type').value,
     statut:      document.getElementById('f-statut').value,
     notes:       document.getElementById('f-notes').value,
@@ -981,7 +1032,7 @@ async function sauvegarderRdv(rdvId) {
     if (rdvId) await updateRdv(rdvId, payload);
     else await createRdv(payload);
     closeModal();
-    showToast(rdvId ? 'RDV mis à jour' : 'RDV créé');
+    showToast(rdvId ? 'RDV mis à jour ✓' : 'RDV créé avec succès ✓');
     loadPageData(document.querySelector('.nav-item.active')?.id?.replace('nav-', '') || 'planning');
   } catch (e) {
     showToast('Erreur : ' + e.message);
