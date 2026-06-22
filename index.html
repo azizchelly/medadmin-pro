@@ -3,30 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MedAdmin Pro — Dr. Amrani</title>
+  <title>MedAdmin Pro — Dr. Samichelly</title>
   <style>/* ── RESET & BASE ─────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --blue:       #185FA5;
-  --blue-light: #E6F1FB;
-  --blue-mid:   #B5D4F4;
-  --green:      #0F6E56;
-  --green-light:#E1F5EE;
-  --amber:      #854F0B;
-  --amber-light:#FAEEDA;
-  --red:        #A32D2D;
-  --red-light:  #FCEBEB;
-  --text:       #1a1a1a;
-  --text-2:     #555;
-  --text-3:     #999;
-  --border:     rgba(0,0,0,.1);
-  --border-2:   rgba(0,0,0,.18);
-  --bg:         #F5F5F3;
-  --bg-2:       #EEEDE9;
+  --blue:       #1B4F8A;
+  --blue-light: #EBF2FA;
+  --blue-mid:   #A8C8EE;
+  --green:      #0D6B4F;
+  --green-light:#E4F4EE;
+  --amber:      #8A5200;
+  --amber-light:#FDF0DC;
+  --red:        #B03030;
+  --red-light:  #FDEAEA;
+  --text:       #111827;
+  --text-2:     #4B5563;
+  --text-3:     #9CA3AF;
+  --border:     rgba(0,0,0,.08);
+  --border-2:   rgba(0,0,0,.15);
+  --bg:         #F8F9FB;
+  --bg-2:       #EFF1F5;
   --white:      #ffffff;
+  --sidebar:    #0F1E35;
+  --sidebar-text: #94A3B8;
+  --sidebar-active: #3B82F6;
   --radius:     8px;
-  --radius-lg:  12px;
+  --radius-lg:  14px;
 }
 
 body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
@@ -37,7 +40,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg);
 .login-logo { text-align: center; margin-bottom: 28px; }
 .login-logo-title { font-size: 20px; font-weight: 600; color: var(--text); }
 .login-logo-sub { font-size: 13px; color: var(--text-2); margin-top: 4px; }
-.login-card { background: var(--white); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 28px 24px; }
+.login-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px 28px; box-shadow: 0 4px 24px rgba(0,0,0,.08); }
 .login-card h2 { font-size: 15px; font-weight: 500; margin-bottom: 20px; text-align: center; }
 .login-error { background: var(--red-light); color: var(--red); border-radius: var(--radius); padding: 10px 12px; font-size: 13px; margin-bottom: 14px; }
 .btn-login { width: 100%; padding: 10px; background: var(--blue); color: #fff; border: none; border-radius: var(--radius); font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 4px; }
@@ -50,32 +53,32 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg);
 #app-shell.visible { display: flex; }
 
 /* ── SIDEBAR ───────────────────────────────────────────── */
-.sidebar { width: 220px; min-width: 220px; background: var(--white); border-right: 0.5px solid var(--border); display: flex; flex-direction: column; height: 100vh; overflow-y: auto; }
-.sidebar-logo { padding: 18px 16px 14px; border-bottom: 0.5px solid var(--border); }
-.logo-title { font-size: 13px; font-weight: 600; }
-.logo-sub { font-size: 11px; color: var(--text-2); margin-top: 2px; }
-.role-tag { display: inline-flex; align-items: center; margin-top: 6px; padding: 3px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; }
-.role-tag.medecin { background: var(--blue-light); color: var(--blue); }
-.role-tag.secretaire { background: var(--green-light); color: var(--green); }
-.nav-section { padding: 12px 8px 4px; font-size: 10px; font-weight: 600; color: var(--text-3); letter-spacing: .08em; text-transform: uppercase; }
-.nav-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; margin: 1px 4px; border-radius: var(--radius); cursor: pointer; color: var(--text-2); font-size: 13px; transition: background .12s; }
-.nav-item:hover { background: var(--bg-2); color: var(--text); }
-.nav-item.active { background: var(--blue-light); color: var(--blue); font-weight: 500; }
-.nav-item.active.sec { background: var(--green-light); color: var(--green); }
+.sidebar { width: 240px; min-width: 240px; background: var(--sidebar); border-right: none; display: flex; flex-direction: column; height: 100vh; overflow-y: auto; }
+.sidebar-logo { padding: 22px 20px 16px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.logo-title { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: -.01em; }
+.logo-sub { font-size: 11px; color: #64748B; margin-top: 3px; }
+.role-tag { display: inline-flex; align-items: center; margin-top: 8px; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.role-tag.medecin { background: rgba(59,130,246,.15); color: #93C5FD; border: 1px solid rgba(59,130,246,.25); }
+.role-tag.secretaire { background: rgba(16,185,129,.15); color: #6EE7B7; border: 1px solid rgba(16,185,129,.25); }
+.nav-section { padding: 16px 16px 4px; font-size: 10px; font-weight: 600; color: #334155; letter-spacing: .1em; text-transform: uppercase; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 14px; margin: 1px 8px; border-radius: var(--radius); cursor: pointer; color: var(--sidebar-text); font-size: 13px; transition: all .15s; }
+.nav-item:hover { background: rgba(255,255,255,.07); color: #CBD5E1; }
+.nav-item.active { background: rgba(59,130,246,.2); color: #60A5FA; font-weight: 500; border-left: 2px solid #3B82F6; margin-left: 8px; padding-left: 12px; }
+.nav-item.active.sec { background: rgba(16,185,129,.15); color: #34D399; border-left: 2px solid #10B981; }
 .nav-item i { font-size: 16px; width: 18px; text-align: center; }
-.sidebar-footer { margin-top: auto; padding: 12px; border-top: 0.5px solid var(--border); }
-.user-badge { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: var(--radius); background: var(--bg); cursor: pointer; }
-.user-badge:hover { background: var(--bg-2); }
-.user-avatar { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
-.av-m { background: var(--blue-light); color: var(--blue); }
-.av-s { background: var(--green-light); color: var(--green); }
-.user-name { font-size: 12px; font-weight: 500; }
-.user-role { font-size: 11px; color: var(--text-2); }
+.sidebar-footer { margin-top: auto; padding: 12px 10px; border-top: 1px solid rgba(255,255,255,.08); }
+.user-badge { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius); background: rgba(255,255,255,.05); cursor: pointer; }
+.user-badge:hover { background: rgba(255,255,255,.09); }
+.user-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.av-m { background: #1D4ED8; color: #fff; }
+.av-s { background: #047857; color: #fff; }
+.user-name { font-size: 12px; font-weight: 600; color: #E2E8F0; }
+.user-role { font-size: 11px; color: #64748B; }
 
 /* ── MAIN ──────────────────────────────────────────────── */
 .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
-.topbar { padding: 0 24px; height: 52px; background: var(--white); border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-.topbar-title { font-size: 15px; font-weight: 500; }
+.topbar { padding: 0 28px; height: 56px; background: var(--white); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+.topbar-title { font-size: 16px; font-weight: 600; color: var(--text); letter-spacing: -.01em; }
 .topbar-actions { display: flex; align-items: center; gap: 8px; }
 .content { flex: 1; overflow-y: auto; padding: 20px 24px; }
 
@@ -90,13 +93,13 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg);
 .btn-sm { padding: 3px 9px; font-size: 11px; }
 
 /* ── CARDS ─────────────────────────────────────────────── */
-.card { background: var(--white); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 16px; }
+.card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 22px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,.04); }
 .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .card-title { font-size: 13px; font-weight: 500; }
 .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-.metric-card { background: var(--bg-2); border-radius: var(--radius); padding: 14px 16px; }
-.metric-label { font-size: 11px; color: var(--text-2); margin-bottom: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: .05em; }
-.metric-value { font-size: 22px; font-weight: 500; line-height: 1; }
+.metric-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; box-shadow: 0 1px 4px rgba(0,0,0,.04); }
+.metric-label { font-size: 11px; color: var(--text-3); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; }
+.metric-value { font-size: 26px; font-weight: 700; line-height: 1; color: var(--text); }
 .metric-delta { font-size: 11px; margin-top: 5px; color: var(--text-2); }
 .delta-up { color: #3B6D11; }
 .delta-dn { color: var(--red); }
@@ -203,8 +206,8 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg);
   <div id="login-screen">
     <div class="login-wrap">
       <div class="login-logo">
-        <div class="login-logo-title">MedAdmin Pro</div>
-        <div class="login-logo-sub">Chirurgie pédiatrique — Dr. Amrani</div>
+        <div class="login-logo-title">Cabinet Dr. Samichelly</div>
+        <div class="login-logo-sub">Chirurgie Pédiatrique — Dr. Samichelly</div>
       </div>
       <div class="login-card">
         <h2>Connexion</h2>
@@ -232,7 +235,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg);
     <nav class="sidebar">
       <div class="sidebar-logo">
         <div class="logo-title">MedAdmin Pro</div>
-        <div class="logo-sub">Dr. Amrani</div>
+        <div class="logo-sub">Dr. Samichelly</div>
         <div class="role-tag" id="role-tag"></div>
       </div>
       <div id="nav-container"></div>
@@ -281,8 +284,8 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg);
 //  Puis copiez vos clés depuis : Project Settings → API
 // ══════════════════════════════════════════════════════════
 
-const SUPABASE_URL = 'https://esdzbjnlkyqvnuzyyooj.supabase.co';       // ex: https://xxxx.supabase.co
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZHpiam5sa3lxdm51enl5b29qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxMTYwMjEsImV4cCI6MjA5NzY5MjAyMX0.AIYNqfrddwS5kPcROwQBNAQmQ0EBZ7lChyYQGLuq1ZE';      // clé "anon public"
+const SUPABASE_URL = 'https://esdzbjnlkyqvnuzyyooj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVzZHpiam5sa3lxdm51enl5b29qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxMTYwMjEsImV4cCI6MjA5NzY5MjAyMX0.AIYNqfrddwS5kPcROwQBNAQmQ0EBZ7lChyYQGLuq1ZE';
 
 // Initialisation du client Supabase
 const { createClient } = supabase;
@@ -1136,7 +1139,7 @@ function renderIA() {
     <div class="card">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:10px;border-bottom:0.5px solid var(--border)">
         <i class="ti ti-robot" style="color:var(--blue);font-size:18px"></i>
-        <span style="font-size:13px;font-weight:500">Assistant IA — Cabinet Dr. Amrani</span>
+        <span style="font-size:13px;font-weight:500">Assistant IA — Cabinet Dr. Samichelly</span>
       </div>
       <div class="ai-chips">
         ${chips.map(c => `<button class="btn" style="font-size:12px" onclick="askAI('${c}')">${c} ↗</button>`).join('')}
@@ -1177,8 +1180,8 @@ async function sendAI() {
 
   const stats = await getStatsMois();
   const system = currentRole === 'medecin'
-    ? `Tu es l'assistant IA du Dr. Amrani, chirurgien pédiatrique. Aide-le avec son planning, ses finances et ses patients. Données actuelles : ${stats.totalRdv} consultations ce mois, ${stats.revenus.toLocaleString('fr-FR')} DT de revenus, ${stats.totalPatients} patients actifs, ${stats.impayees} factures en attente. Réponds en français, de façon concise et professionnelle.`
-    : `Tu es l'assistant de la secrétaire du cabinet du Dr. Amrani (chirurgie pédiatrique, Tunis). Aide à la gestion administrative : RDV, patients, factures. Données : ${stats.totalRdv} RDV ce mois, ${stats.totalPatients} patients, ${stats.impayees} factures en attente. Réponds en français, de façon pratique et concise.`;
+    ? `Tu es l'assistant IA du Dr. Samichelly, chirurgien pédiatrique. Aide-le avec son planning, ses finances et ses patients. Données actuelles : ${stats.totalRdv} consultations ce mois, ${stats.revenus.toLocaleString('fr-FR')} DT de revenus, ${stats.totalPatients} patients actifs, ${stats.impayees} factures en attente. Réponds en français, de façon concise et professionnelle.`
+    : `Tu es l'assistant de la secrétaire du cabinet du Dr. Samichelly (chirurgie pédiatrique, Tunis). Aide à la gestion administrative : RDV, patients, factures. Données : ${stats.totalRdv} RDV ce mois, ${stats.totalPatients} patients, ${stats.impayees} factures en attente. Réponds en français, de façon pratique et concise.`;
 
   try {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
@@ -1273,7 +1276,7 @@ function launchApp() {
   av.className = 'user-avatar ' + (r === 'medecin' ? 'av-m' : 'av-s');
 
   document.getElementById('user-name-badge').textContent =
-    r === 'medecin' ? 'Dr. Amrani' : 'Secrétariat';
+    r === 'medecin' ? 'Dr. Samichelly' : 'Secrétariat';
 
   // Construire la navigation
   buildNav(r);
