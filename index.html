@@ -816,7 +816,11 @@ async function renderPlanning() {
           const ds = d.toISOString().slice(0,10);
           const slots = rdvsAt(ds, h);
           return `<div class="ws">${slots.map(r =>
-            `<div class="ap ${typeApColor(r.type)}" onclick="openModalRdv('${r.id}')">${r.patients?.nom?.split(' ')[0] || '?'}<br>${r.type||''}</div>`
+            `<div class="ap ${typeApColor(r.type)}" onclick="openModalRdv('${r.id}')">
+              <div style="font-weight:600;font-size:11px">${r.heure?.slice(0,5)||''} · ${r.patients?.nom?.split(' ')[0] || '?'}</div>
+              <div style="font-size:10px;opacity:.85">${r.type||''}</div>
+              ${r.notes && r.notes !== 'EMPTY' ? `<div style="font-size:10px;opacity:.75;margin-top:2px;border-top:1px solid rgba(0,0,0,.1);padding-top:2px">${r.notes.slice(0,30)}${r.notes.length>30?'…':''}</div>` : ''}
+            </div>`
           ).join('')}</div>`;
         }).join('')}
       `).join('')}
