@@ -43,6 +43,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg);
 .login-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px 28px; box-shadow: 0 4px 24px rgba(0,0,0,.08); }
 .login-card h2 { font-size: 15px; font-weight: 500; margin-bottom: 20px; text-align: center; }
 .login-error { background: var(--red-light); color: var(--red); border-radius: var(--radius); padding: 10px 12px; font-size: 13px; margin-bottom: 14px; }
+.login-success { background: #E4F4EE; color: #0D6B4F; border-radius: var(--radius); padding: 10px 12px; font-size: 13px; margin-bottom: 14px; }
 .btn-login { width: 100%; padding: 10px; background: var(--blue); color: #fff; border: none; border-radius: var(--radius); font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 4px; }
 .btn-login:hover { background: #0C447C; }
 .btn-login:disabled { opacity: .6; cursor: not-allowed; }
@@ -298,10 +299,11 @@ let currentUser = null;
 let currentRole = null;
 
 async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass  = document.getElementById('login-pass').value.trim();
-  const errEl = document.getElementById('login-error');
-  const btn   = document.getElementById('btn-login');
+  const email      = document.getElementById('login-email').value.trim();
+  const pass       = document.getElementById('login-pass').value.trim();
+  const rememberMe = document.getElementById('remember-me').checked;
+  const errEl      = document.getElementById('login-error');
+  const btn        = document.getElementById('btn-login');
 
   errEl.style.display = 'none';
   if (!email || !pass) {
@@ -324,10 +326,77 @@ async function doLogin() {
     return;
   }
 
+  // Se souvenir de moi — sauvegarder email dans localStorage
+  if (rememberMe) {
+    localStorage.setItem('medadmin_email', email);
+    localStorage.setItem('medadmin_remember', 'true');
+  } else {
+    localStorage.removeItem('medadmin_email');
+    localStorage.removeItem('medadmin_remember');
+  }
+
   currentUser = data.user;
-  // Le rôle est stocké dans les métadonnées utilisateur (défini à la création du compte)
   currentRole = data.user.user_metadata?.role || 'secretaire';
   launchApp();
+}
+
+function togglePass() {
+  const inp = document.getElementById('login-pass');
+  const icon = document.getElementById('eye-icon');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    icon.textContent = '🙈';
+  } else {
+    inp.type = 'password';
+    icon.textContent = '👁';
+  }
+}
+
+function showForgotPassword() {
+  document.getElementById('login-form').style.display = 'none';
+  document.getElementById('forgot-form').style.display = 'block';
+  document.getElementById('login-error').style.display = 'none';
+  const email = document.getElementById('login-email').value;
+  if (email) document.getElementById('forgot-email').value = email;
+}
+
+function showLoginForm() {
+  document.getElementById('forgot-form').style.display = 'none';
+  document.getElementById('login-form').style.display = 'block';
+  document.getElementById('forgot-success').style.display = 'none';
+}
+
+async function doForgotPassword() {
+  const email = document.getElementById('forgot-email').value.trim();
+  const btn   = document.getElementById('btn-forgot');
+  if (!email) { showToast('Veuillez entrer votre email'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Envoi…';
+
+  const { error } = await db.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/?reset=true'
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Envoyer le lien';
+
+  if (error) {
+    showToast('Erreur : ' + error.message);
+    return;
+  }
+  document.getElementById('forgot-success').style.display = 'block';
+}
+
+// Pré-remplir email si "se souvenir de moi" était coché
+function restoreRememberedEmail() {
+  if (localStorage.getItem('medadmin_remember') === 'true') {
+    const email = localStorage.getItem('medadmin_email');
+    if (email) {
+      document.getElementById('login-email').value = email;
+      document.getElementById('remember-me').checked = true;
+    }
+  }
 }
 
 async function logout() {
@@ -342,6 +411,7 @@ async function logout() {
 
 // Vérifie si une session existe déjà au chargement
 async function checkSession() {
+  restoreRememberedEmail();
   const { data: { session } } = await db.auth.getSession();
   if (session) {
     currentUser = session.user;
