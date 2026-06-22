@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedAdmin Pro — Dr. Amrani</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen">
+    <div class="login-wrap">
+      <div class="login-logo">
+        <div class="login-logo-title">MedAdmin Pro</div>
+        <div class="login-logo-sub">Chirurgie pédiatrique — Dr. Amrani</div>
+      </div>
+      <div class="login-card">
+        <h2>Connexion</h2>
+        <div id="login-error" class="login-error" style="display:none"></div>
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="login-email" placeholder="votre@email.com">
+        </div>
+        <div class="field">
+          <label>Mot de passe</label>
+          <input type="password" id="login-pass" placeholder="••••••••">
+        </div>
+        <button class="btn-login" onclick="doLogin()" id="btn-login">
+          Se connecter
+        </button>
+        <div class="login-hint">
+          Accès réservé au personnel médical autorisé
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP SHELL -->
+  <div id="app-shell">
+    <nav class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-title">MedAdmin Pro</div>
+        <div class="logo-sub">Dr. Amrani</div>
+        <div class="role-tag" id="role-tag"></div>
+      </div>
+      <div id="nav-container"></div>
+      <div class="sidebar-footer">
+        <div class="user-badge" onclick="logout()">
+          <div class="user-avatar" id="user-av"></div>
+          <div>
+            <div class="user-name" id="user-name-badge"></div>
+            <div class="user-role">Déconnexion →</div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title" id="page-title">Tableau de bord</div>
+        <div class="topbar-actions">
+          <button class="btn" id="notif-btn"><i class="ti ti-bell"></i></button>
+          <button class="btn btn-primary" id="topbar-main-btn">
+            <i class="ti ti-plus"></i><span id="topbar-btn-label">Nouveau RDV</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="content" id="content-area">
+        <!-- Pages injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-overlay" onclick="closeModal()">
+    <div class="modal" id="modal-content" onclick="event.stopPropagation()"></div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pages.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
