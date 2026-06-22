@@ -789,7 +789,12 @@ async function renderPlanning() {
   const hours = ['08h','09h','10h','11h','12h','13h','14h','15h','16h','17h'];
 
   function rdvsAt(dateStr, h) {
-    return rdvs.filter(r => r.date === dateStr && r.heure?.startsWith(h.replace('h',':')));
+    const hNum = h.replace('h','').padStart(2,'0');
+    return rdvs.filter(r => {
+      if (r.date !== dateStr) return false;
+      const heureStr = r.heure || '';
+      return heureStr.startsWith(hNum + ':');
+    });
   }
 
   el.innerHTML = `
