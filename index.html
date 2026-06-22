@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MedAdmin Pro — Dr.Samichelly</title>
+  <title>MedAdmin Pro — Dr. Samichelly</title>
   <style>/* ── RESET & BASE ─────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -255,7 +255,7 @@ body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg);
         <div class="topbar-title" id="page-title">Tableau de bord</div>
         <div class="topbar-actions">
           <button class="btn" id="notif-btn"><i class="ti ti-bell"></i></button>
-          <button class="btn btn-primary" id="topbar-main-btn">
+          <button class="btn btn-primary" id="topbar-main-btn" onclick="openModalRdv()">
             <i class="ti ti-plus"></i><span id="topbar-btn-label">Nouveau RDV</span>
           </button>
         </div>
@@ -522,6 +522,24 @@ function showPage(id) {
     ia: 'Assistant IA',
   };
   document.getElementById('page-title').textContent = titles[id] || '';
+
+  // Update topbar button based on page
+  const btnLabel = document.getElementById('topbar-btn-label');
+  const mainBtn = document.getElementById('topbar-main-btn');
+  const btnActions = {
+    'dashboard-med': ['Nouveau RDV', () => openModalRdv()],
+    'dashboard-sec': ['Nouveau RDV', () => openModalRdv()],
+    'planning':      ['Nouveau RDV', () => openModalRdv()],
+    'patients':      ['Nouveau patient', () => openModalPatient()],
+    'dossiers':      ['Nouveau patient', () => openModalPatient()],
+    'factures':      ['Nouvelle facture', () => openModalFacture()],
+    'finances':      ['Exporter', () => showToast('Export bientôt disponible')],
+    'ia':            ['Nouvelle question', () => document.getElementById('ai-input')?.focus()],
+  };
+  const [label, action] = btnActions[id] || ['Nouveau', () => {}];
+  if (btnLabel) btnLabel.textContent = label;
+  if (mainBtn) mainBtn.onclick = action;
+
   loadPageData(id);
 }
 
@@ -1316,4 +1334,4 @@ window.addEventListener('DOMContentLoaded', () => {
 
   </script>
 </body>
-</html>  
+</html>
