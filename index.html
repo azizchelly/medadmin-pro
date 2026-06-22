@@ -327,13 +327,15 @@ async function doLogin() {
   }
 
   // Se souvenir de moi — sauvegarder email dans localStorage
-  if (rememberMe) {
-    localStorage.setItem('medadmin_email', email);
-    localStorage.setItem('medadmin_remember', 'true');
-  } else {
-    localStorage.removeItem('medadmin_email');
-    localStorage.removeItem('medadmin_remember');
-  }
+  try {
+    if (rememberMe) {
+      localStorage.setItem('medadmin_email', email);
+      localStorage.setItem('medadmin_remember', 'true');
+    } else {
+      localStorage.removeItem('medadmin_email');
+      localStorage.removeItem('medadmin_remember');
+    }
+  } catch(e) { /* localStorage non disponible, on continue */ }
 
   currentUser = data.user;
   currentRole = data.user.user_metadata?.role || 'secretaire';
@@ -390,13 +392,17 @@ async function doForgotPassword() {
 
 // Pré-remplir email si "se souvenir de moi" était coché
 function restoreRememberedEmail() {
-  if (localStorage.getItem('medadmin_remember') === 'true') {
-    const email = localStorage.getItem('medadmin_email');
-    if (email) {
-      document.getElementById('login-email').value = email;
-      document.getElementById('remember-me').checked = true;
+  try {
+    if (localStorage.getItem('medadmin_remember') === 'true') {
+      const email = localStorage.getItem('medadmin_email');
+      if (email) {
+        const el = document.getElementById('login-email');
+        const cb = document.getElementById('remember-me');
+        if (el) el.value = email;
+        if (cb) cb.checked = true;
+      }
     }
-  }
+  } catch(e) { /* localStorage non disponible */ }
 }
 
 async function logout() {
